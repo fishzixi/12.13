@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .add {
+            /* background-color: #ccc; */
+            width: 100px;
+            height: 50px;
+            text-align: center;
+            line-height: 50px;
+            border-radius: 10px;
+            border: 1px solid #f5f2f2;
+            box-shadow: 0 1px 2px #ccc;
+            position: relative;
+
+        }
+
+        .add:hover {
+            cursor: pointer;
+            background-color: #f5f2f2;
+        }
+
+        button {
+            /* width: 50px;
+            height: 30px; */
+            border: none;
+            background-color: white;
+            font-size: 22px;
+            font-weight: bold;
+            position: absolute;
+            right: 20px;
+            bottom: 35px;
+            
+        }
+
+        .tan {
+            position: fixed;
+            width: 500px;
+            height: 100px;
+            bottom: 0px;
+            right: 50px;
+            border: 1px solid #ccc;
+            border-radius: 15px;
+            animation: 1s 1 cubic-bezier(0.09, 0.32, 0.51, 1.1) forwards;
+            display: none;
+        }
+
+        @keyframes run {
+            to {
+                bottom: 100px;
+            }
+        }
+
+        
+    </style>
+</head>
+<body>
+    <div class="all">
+        <div class="add">添加到日历</div>
+        <div class="tan">
+            <h4>预定：赶上</h4>
+            <p></p>
+            <button>撤销</button>
+        </div>
+    </div>
+    <script>
+        var add = document.querySelector('.add');
+        var tan = document.querySelector('.tan');
+        var button = document.querySelector('button');
+        add.addEventListener('click', function() {
+            var data = new Date();
+            var y = data.getFullYear();
+            var m = data.getMonth() + 1;
+            var d = data.getDate();
+            var w = data.getDay();
+            var h = data.getHours();
+            var mi = data.getMinutes();
+            console.log(mi);
+            var s = data.getSeconds();
+            var str = y + '年' + m + '月' + d + '日' + '星期' + w + ' ' + h + ':';
+            if (mi < 10) {
+               str += '0'+mi ;
+            }else{
+                str += mi;
+            }
+
+            if(s < 10){
+                str += ':0'+s;
+            }else{
+                str += ":"+s;
+            }
+            tan.querySelector('p').innerHTML = str;
+            tan.style.display = 'block';
+            tan.style.animationName = 'run';
+
+            var timeId = setTimeout(function(){
+            tan.style.display = 'none';
+            
+            
+        },2000)
+        })
+
+        button.addEventListener('click', function() {
+            tan.style.display = 'none';
+        })
+
+       
+    </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .ikun {
+            margin: 500px auto;
+            width: 1200px;
+            height: 540px;
+            /* width: 100vw;
+            height: 100vh; */
+            background-size: 1200px;
+            background-image: url(./images/ikun.png);
+            /* animation: ikun 10s steps(10) infinite; */
+            animation: ikun 4s  infinite;
+            background-repeat: no-repeat;
+        }
+
+        @keyframes ikun {
+            from {
+                background-position: 0 0; 
+            }
+
+            to {
+                 background-position: 0 -5400px; 
+            }
+
+            }
+
+    </style>
+</head>
+<body>
+        <div class="ikun"></div>   
+        <a href="index.html">index</a>
+</body>
+</html>

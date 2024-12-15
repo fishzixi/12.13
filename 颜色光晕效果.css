@@ -1,0 +1,61 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/* 这是在html里实现不了的，只能在css里实现。不然会影响后面标签 */
+@property --baifenbi {
+    syntax: "<percentage>";
+    inherits: true;
+    initial-value: 0%;
+}
+
+@property --x {
+    syntax: "<length>";
+    inherits: true;
+    initial-value: 0;
+}
+
+@property --y {
+    syntax: "<length>";
+    inherits: true;
+    initial-value: 0;
+}
+
+:root {
+     --baifenbi : 0%;
+     --x : 0;
+     --y : 0;
+}
+
+body {
+    animation: 2s ease-in-out forwards;
+    /* animation-name: dark; */
+    width: 100vw;
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-image: radial-gradient(circle at var(--x) var(--y),
+    black 0%, black var(--baifenbi), white var(--baifenbi),white 100%);
+}
+
+
+
+@keyframes light {
+    from {
+        --baifenbi: 0%;
+    }
+    to {
+        --baifenbi: 100%;
+    }
+
+}
+
+@keyframes dark {
+    from {
+        --baifenbi: 100%;
+    }
+    to {
+        --baifenbi: 0%;
+    }
+}
+

@@ -1,0 +1,117 @@
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.center {
+    width: 420px;
+    margin: 0 auto;
+    user-select: none;
+
+
+}
+.top{
+    width: 430px;
+    height: 30px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.top h4 {
+    margin-top:5px;
+}
+
+
+.top div {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.all {
+    width: 450px;
+    height: 260px;
+    padding: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 0 auto;
+}
+
+.week-date {
+    margin-top: 10px;
+    width: 420px;
+    height: 30px;
+}
+
+.week-date ul {
+    display: flex;
+    width: 420px;
+    height: 30px;
+    justify-content: space-around;
+    align-items: center;
+    list-style: none;
+}
+
+.now-date {
+    width: 420px;
+    height: 200px;
+    display: flex;
+    justify-content: space-between;
+    align-content: space-around;
+    flex-wrap: wrap;
+    text-align: center;
+
+}
+
+.all-date {
+    color: black;
+    cursor: pointer;
+    width: 53px;
+}
+
+.all-date:hover {
+    background-color: #fad8d8;
+}
+
+.click-date {
+    background-color: black;
+    color: white;
+}
+
+.insert {
+    color: #a4a3a3;
+    cursor: not-allowed;
+    width: 53px;
+}
+
+/* @property --afterMonth {
+    syntax: "<string>";
+    initial-value: "12";
+    inherits: true;
+} */
+
+:root {
+    --afterMonth:"12";
+}
+
+.all::after {
+    content: var(--afterMonth);
+    /* background-color: orange; */
+    width: 250px;
+    text-align: center;
+    position: absolute;
+   top: 5%;
+   left: 35%;
+   font-size: 200px;
+   font-weight: bold;
+   color: #e7e7e7;
+   z-index: -1;
+}
+
+

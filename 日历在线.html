@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./日历在线.css" >
+</head>
+<body>
+    <svg>
+        <symbol id="date" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+            <path fill="currentColor"
+                d="M5.673 0a.7.7 0 0 1 .7.7v1.309h7.517v-1.3a.7.7 0 0 1 1.4 0v1.3H18a2 2 0 0 1 2 1.999v13.993A2 2 0 0 1 18 20H2a2 2 0 0 1-2-1.999V4.008a2 2 0 0 1 2-1.999h2.973V.699a.7.7 0 0 1 .7-.699M1.4 7.742v10.259a.6.6 0 0 0 .6.6h16a.6.6 0 0 0 .6-.6V7.756zm5.267 6.877v1.666H5v-1.666zm4.166 0v1.666H9.167v-1.666zm4.167 0v1.666h-1.667v-1.666zm-8.333-3.977v1.666H5v-1.666zm4.166 0v1.666H9.167v-1.666zm4.167 0v1.666h-1.667v-1.666zM4.973 3.408H2a.6.6 0 0 0-.6.6v2.335l17.2.014V4.008a.6.6 0 0 0-.6-.6h-2.71v.929a.7.7 0 0 1-1.4 0v-.929H6.373v.92a.7.7 0 0 1-1.4 0z" />
+        </symbol>
+    </svg>
+    <div class="all">
+        <div class="center">
+            <div class="top">
+                <div class="topprve">
+                    <span><</span>
+                </div>
+                <h4>日历</h4>
+                <div class="topnext">
+                    <span>></span>
+                </div>
+            </div>
+            <div class="week-date">
+                <ul>
+                    <li> 日 </li>
+                    <li> 一 </li>
+                    <li> 二 </li>
+                    <li> 三 </li>
+                    <li> 四 </li>
+                    <li> 五 </li>
+                    <li> 六 </li>
+                    
+                </ul>
+            </div>
+
+            <div class="now-date">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom">
+        <svg><use xlink:href="#date"></use></svg>
+    </div>
+    <script>
+        // 2024年12月日期动态渲染在页面上
+        //1.11月总共多少天
+        //2. 12月总共多少天
+        //3. 12月1号是星期几
+        //4.前面要插上一个月的几天，是星期几就插上几天
+        //5.后面要插上一个月的几天，7-(上月插数+本月天数)%7；
+        //分成三个片段，上月，本月，下月，最后一起渲染到页面上。
+
+        var current_date = new Date();
+        var y = current_date.getFullYear();
+        var m = current_date.getMonth() + 1;
+        var h4 = document.querySelector('.top h4');
+        var all= document.querySelector('.all');
+        h4.innerText = y;
+
+        function getMonthAllDate(year,month){
+            var MonthendDate = new Date(year,month,0);//获取当月和上月最后一天,eg 13月0号就是12月最后一天，调用
+            var allDate = MonthendDate.getDate();//获取当月天数
+            return allDate; 
+        }
+
+        function getFirstDayWeek(year,month){
+            var firstDay = new Date(year,month-1,1);
+            var firstDayWeek = firstDay.getDay(); //获取当月第一天是星期几，0代表星期日，1代表星期一
+            return firstDayWeek;
+        }
+
+        //更新年月 
+        function updateMonth(newYear,newMonth){
+            h4.innerText = newYear;
+            all.style.setProperty('--afterMonth', `"${newMonth}"`);
+            
+
+        }
+
+        // 初始化 点击事件
+        function initEvent(year,month){
+            var clickDate = document.querySelectorAll('.all-date');
+            all.addEventListener('click',function(e){
+                if(e.target.classList.contains('topprve')||
+                (e.target.tagName === 'SPAN' &&
+                 e.target.parentNode.classList.contains('topprve'))){
+                    //上一年月
+                    console.log(e.target.tagName)
+                    month--;
+                    var newDate = new Date(year,month)
+                    var newYear = newDate.getFullYear();
+                    var newMonth = newDate.getMonth() + 1;
+                    createCalendar(newYear,newMonth);
+                    updateMonth(newYear,newMonth);
+
+                    console.log(newDate);
+                    console.log(month,year);
+                }
+                if(e.target.classList.contains('topnext')||e.target.tagName=='SPAN'){
+                    //下一年月
+                    month++;
+                    var newDate = new Date(year,month)
+                    var newYear = newDate.getFullYear();
+                    var newMonth = newDate.getMonth() + 1;
+                    createCalendar(newYear,newMonth);
+                    updateMonth(newYear,newMonth);
+                    console.log(newDate);
+                }
+                if(e.target.classList.contains('all-date')){
+                    console.log(e)
+                    // console.log(clickDate.length)
+                    
+                    for(j=0;j<clickDate.length;j++) {
+                        if(e.target.innerText === clickDate[j].innerText){
+                            // console.log(e.target.innerText)
+                            // console.log(clickDate[j].innerText)
+                           clickDate[j].classList.add("click-date");
+
+                            // console.log(111)
+                        }else{
+                            clickDate[j].classList.remove("click-date");
+                        }
+                }                    
+                }   
+            });
+           
+        }
+
+       
+
+
+        //定义渲染类型 给定样式
+        var INSERT = 'INSERT';
+        var NOWTYPE = 'NOWTYPE';
+
+        function rendering_to_page (year,month,start,end,type){
+            var fragment = document.createDocumentFragment();//创建文档碎片
+            var today = current_date.getDate();
+                for(var i=start;i<=end;i++) {
+               var div = document.createElement('div'); 
+               div.innerText = i;
+            //    console.log(div)
+               div.classList.add('all-date');//给所有加样式 
+               if(i===today&&month===m&&year===y){
+                div.style.backgroundColor = '#ccc';//给今天加背景
+               }
+               switch(type){
+                case INSERT:
+                    div.classList.add('insert');//覆盖前面的样式，给不是本月的日期加样式
+                    div.classList.remove('all-date');
+                    break;
+               }
+               fragment.appendChild(div);
+            //    console.log(fragment)
+            
+
+            } 
+                return fragment;
+        }
+            //渲染日历
+            function createCalendar(year,month){
+            var prveDate = getMonthAllDate(year,month-1);//上月天数
+            // console.log(prveDate);
+            var nowDate = getMonthAllDate(year,month);//本月天数
+            // console.log(nowDate);
+            var nowFirstDayWeek = getFirstDayWeek(year,month);//本月第一天是星期几  前面插几个值
+            // console.log(nowFirstDayWeek);
+
+            //计算前面要插上一个月的几天，是星期几就插上几天,从什么时候开始插
+            var prveInsertDate = prveDate - nowFirstDayWeek + 1;//eg:31-4+1=28  31 30 29 28 从28号开始插
+            // console.log(prveInsertDate);
+            //计算后面要插下一个月的几天，7-(上月插的个数+本月天数)%7；
+            var nextInsertDate = 7 - (nowFirstDayWeek + nowDate) % 7; //得到后面插几天
+            if(nextInsertDate === 7){
+                nextInsertDate = 0;
+            }
+            //多次调用渲染函数 得到每一个片段结果，插在文档碎片中，最后一起渲染到页面上
+            var prve_start = rendering_to_page(year,month,prveInsertDate,prveDate,INSERT);
+            var now_start = rendering_to_page(year,month,1,nowDate,NOWTYPE);
+            var next_start = rendering_to_page(year,month,1,nextInsertDate,INSERT);
+            
+
+            var allfragment = document.createDocumentFragment();
+            allfragment.appendChild(prve_start);
+            allfragment.appendChild(now_start);
+            allfragment.appendChild(next_start);
+            var nowDateDiv = document.querySelector('.now-date');
+            nowDateDiv.innerHTML = '';//清空原来的日期在渲染新的
+            nowDateDiv.appendChild(allfragment); //渲染到页面上 
+        }
+        createCalendar(y,m);
+        window.onload=function(){
+            initEvent(y,m);
+        } //页面加载完成后在调用函数
+
+       
+        
+        
+
+
+    </script>
+</body>
+</html>

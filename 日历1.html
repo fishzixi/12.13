@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./日历1.css">
+</head>
+<body>
+    <svg style="display: none;">
+        <symbol id="date" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+            <path fill="currentColor"
+                d="M5.673 0a.7.7 0 0 1 .7.7v1.309h7.517v-1.3a.7.7 0 0 1 1.4 0v1.3H18a2 2 0 0 1 2 1.999v13.993A2 2 0 0 1 18 20H2a2 2 0 0 1-2-1.999V4.008a2 2 0 0 1 2-1.999h2.973V.699a.7.7 0 0 1 .7-.699M1.4 7.742v10.259a.6.6 0 0 0 .6.6h16a.6.6 0 0 0 .6-.6V7.756zm5.267 6.877v1.666H5v-1.666zm4.166 0v1.666H9.167v-1.666zm4.167 0v1.666h-1.667v-1.666zm-8.333-3.977v1.666H5v-1.666zm4.166 0v1.666H9.167v-1.666zm4.167 0v1.666h-1.667v-1.666zM4.973 3.408H2a.6.6 0 0 0-.6.6v2.335l17.2.014V4.008a.6.6 0 0 0-.6-.6h-2.71v.929a.7.7 0 0 1-1.4 0v-.929H6.373v.92a.7.7 0 0 1-1.4 0z" />
+        </symbol>
+    </svg>
+    <div class="all">
+        <div class="center">
+            <div class="top">
+                <div class="topprve">
+                    上月
+                </div>
+                <h4>日历</h4>
+                <div class="topnext">
+                    下月
+                </div>
+            </div>
+            <div class="week-date">
+                <ul>
+                    <li> 日 </li>
+                    <li> 一 </li>
+                    <li> 二 </li>
+                    <li> 三 </li>
+                    <li> 四 </li>
+                    <li> 五 </li>
+                    <li> 六 </li>
+                    
+                </ul>
+            </div>
+
+            <div class="now-date">
+               
+            </div>
+        </div>
+    </div>
+    <div class="bottom">
+        <svg width="20" height="20"><use xlink:href="#date"></use></svg>
+        <div class="bottom_in"></div>
+    </div>
+    <script>
+        //获取当前时间
+        //获取当月的天数
+        //获取上月的天数
+        //当月第一天是星期几
+        //上月要插几个值在当前日历表，当月第一天是星期几就插几个值
+        //上月要从几号开始插在日历表前面 上月天数-插的个数+1
+        //下月要插几个值在日历表后面，7-（上月插的个数+当月天数）%7；从一号开始插
+        //分三个片段渲染，上月插值，当月，下月插值
+
+        var nowTime = new Date();
+        var y = nowTime.getFullYear();
+        var m = nowTime.getMonth() + 1;
+        var today = nowTime.getDate();
+        var all = document.querySelector(".all");
+        var h4 = document.querySelector(".top h4");
+        var bottom = document.querySelector(".bottom");
+        var bottom_in = document.querySelector(".bottom_in");
+        
+
+        //获取月的总天数
+        function getMonthDays(year,month){
+            var monthDays = new Date(year,month,0);//0号即为上月的最后一天
+            return monthDays.getDate();
+        }
+
+        //获取月的第一天是星期几
+        function getFirstDayWeek(year,month){
+            var firstDay = new Date(year,month-1,1);//传入的是现实的月减一
+            return firstDay.getDay();
+        }
+
+        //计算渲染内容并插在文档碎片中
+        var NOWTYPE = "NOWTYPE"
+        var INSERTTYPE = "INSERTTYPE"
+        function getRendering(year,month,start,end,type){
+            
+            fragment = document.createDocumentFragment();//创建文档碎片
+            for(i=start;i<=end;i++){
+               var div=document.createElement("div");
+                div.innerText=i;
+                // console.log(div);
+                // console.log(i);
+                if(type===NOWTYPE){
+                    div.classList.add("all-date");//本月日期样式
+                    if(today===i&&month===m&&y===year){
+                        div.style="background-color:#ccc;color:white;"
+                    }
+                }else if(type===INSERTTYPE){
+                    div.classList.add("insert");//插入日期样式
+                }
+                fragment.appendChild(div);  
+                
+                }
+                // console.log(fragment);
+                
+                return fragment;
+            }
+
+            //更新显示年和背景月
+            function updateYearMonth(year,month){
+                h4.innerText = year;
+                //使用setPropery方法设置css变量
+                all.style.setProperty('--afterMonth', `"${month}"`);
+            }
+
+            function bottomClick(year,month,day){
+                var bottomString = year+"年"+month+"月"+day+"日";
+                bottom_in.innerText= bottomString;
+            }
+
+            //绑定点击事件
+            function bindClickEvent(year,month){
+                // var allDate = all.querySelectorAll(".all-date");
+                // console.log(allDate)
+                all.addEventListener("click",function(e){
+                    console.log(e.target);
+                    if(e.target.classList.contains("topprve")){
+                        month--;
+                        
+                    }else if(e.target.classList.contains("topnext")){
+                        month++;
+                    }
+                    var newYear = new Date(year,month-1);
+                    var newY = newYear.getFullYear();
+                    var newM = newYear.getMonth()+1;
+                    var newMonthDayString = newY+"年"+newM+"月";
+                    console.log(newMonthDayString);
+                    console.log(newY+"年"+newM+"月");
+                    
+                    updateYearMonth(newY,newM);
+                    createCalendar(newY,newM);
+                    
+                    
+                    if(e.target.classList.contains("all-date")){
+                        console.log("222")
+                        var allDate = all.querySelectorAll(".all-date");
+                        for(var j = 0;j<allDate.length;j++){
+                            if(allDate[j].innerText===e.target.innerText){
+                                console.log("3333")
+                                var day = allDate[j].innerText;
+                                allDate[j].classList.add("click-date");
+                                allDate[j].style.setProperty("--hoverColor","black");
+                                console.log(allDate[j])
+                                // allDate[j].style.removeProperty("--hoverColor")
+                            }else{
+                                allDate[j].classList.remove("click-date");
+                            }
+                        }
+                        bottomClick(newY,newM,day);
+                    }
+                   
+                })
+            }
+
+            window.onload = function(){
+                bindClickEvent(y,m);
+            }
+
+            
+
+        function createCalendar(year,month){
+            //获取当月的天数
+            var nowMonthDays = getMonthDays(year,month);
+            //获取上月的天数
+            var prveMonthDays = getMonthDays(year,month-1);
+            //当月第一天是星期几 也就是要插的个数
+            var firstDayWeek = getFirstDayWeek(year,month);
+            //上月要插的值从几号开始
+            var prve_start = prveMonthDays-firstDayWeek+1;//31 30 29 28 31-4+1=28
+            //下月要插几个
+            var next_insert_num = 7-(firstDayWeek+nowMonthDays)%7;
+            if(next_insert_num===7)next_insert_num=0;
+            // console.log(nowMonthDays);
+            // console.log(prveMonthDays);
+            // console.log(firstDayWeek);
+            // console.log(prve_start);
+            // console.log(next_insert_num);
+            
+            //上月插值渲染
+            var prveRendering = getRendering(year,month,prve_start,prveMonthDays,INSERTTYPE);
+            console.log(prveRendering);
+            //当月渲染
+            var nowRendering = getRendering(year,month,1,nowMonthDays,NOWTYPE);
+            //下月插值渲染
+            var nextRendering = getRendering(year,month,1,next_insert_num,INSERTTYPE);
+            var allfragment = document.createDocumentFragment();
+            allfragment.appendChild(prveRendering);
+            allfragment.appendChild(nowRendering);
+            allfragment.appendChild(nextRendering);
+            document.querySelector(".now-date").innerHTML = "";
+            document.querySelector(".now-date").appendChild(allfragment);
+        }
+        
+        bottom.addEventListener("click",function(){
+            if(all.style.display === "none"){
+                all.style.display = "block";
+            }else{
+                all.style.display = "none";
+            }
+        })
+        createCalendar(y,m);
+    </script>
+</body>
+</html>

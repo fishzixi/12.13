@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div {
+            width: 400px;
+            height: 400px;
+            margin: 200px auto;
+            background: conic-gradient(rgb(245, 147, 216),rgb(168, 238, 168),rgb(245, 147, 216));
+            border-radius: 50%;
+            filter: blur(44px);
+            animation: run 2s linear infinite;
+            /* 模糊程度 */
+        }
+
+        @keyframes run {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <a href="index.html">index</a>
+    <div>
+
+    </div>
+</body>
+</html>

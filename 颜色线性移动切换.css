@@ -1,0 +1,31 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/* 这是在html里实现不了的，只能在css里实现。不然会影响后面标签 */
+@property --baifenbi {
+    syntax: "<percentage>";
+    inherits: true;
+    initial-value: 0%;
+}
+
+
+:root {
+     --baifenbi : 0%;
+}
+
+.baz {
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(to right,red 0%, red var(--baifenbi), yellow var(--baifenbi), yellow 100%);
+    animation: 3s linear forwards;
+    /* animation-name: change; */
+    
+}
+
+@keyframes change {
+    to {
+        --baifenbi: 100%;
+    }
+}

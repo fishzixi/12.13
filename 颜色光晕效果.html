@@ -1,0 +1,57 @@
+<!-- 线性渐变： -->
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./颜色线性移动切换.css">
+</head>
+<body>
+    <button>点击</button>
+    <div class="baz"></div>
+    
+    <script>
+        var btn = document.querySelector('button');
+        var baz = document.querySelector('.baz');
+        btn.addEventListener('click', function() {
+            baz.style.animationName="change";
+            console.log("111");
+        })
+    </script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./颜色光晕效果.css">
+</head>
+<body>
+    <a href="index.html">index</a>
+    <script>
+        var body = document.body;
+        var isLight = true;//定义一定要取在外面
+        body.addEventListener('click', function(e) {
+            this.style.setProperty("--x",`${e.x}px`)
+            this.style.setProperty("--y",`${e.y}px`)
+            
+            if (isLight) {
+                this.style.setProperty("--bafenbi","0")
+                this.style.animationName = "light";
+                console.log("22");
+            }else{
+                this.style.setProperty("--bafenbi","100%")
+                this.style.animationName = "dark";
+                console.log("111");
+            }
+            isLight = !isLight;
+        })
+        
+    </script>
+</body>
+</html>
